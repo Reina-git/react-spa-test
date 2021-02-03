@@ -7,7 +7,7 @@ export default class Project extends React.Component {
     const initialCounterState = 0;
     this.state = {
       counter: initialCounterState,
-      apiData: [],
+      apiData: "",
     };
   }
   increaseCounter() {
@@ -21,11 +21,19 @@ export default class Project extends React.Component {
       .get("https://randomuser.me/api")
       .then((res) => {
         // handle success
-        const apiData = res.data;
         this.setState({
-          apiData: apiData,
+          apiData: JSON.stringify(res.data.results),
         });
-        console.log("apiDate", apiData);
+        // console.log("state", this.state.apiData);
+
+        // console.log("res.data", res.data);
+        const copyOfApiData = [this.state.apiData];
+        // console.log("copy of api data", copyOfApiData);
+        const updatedApiData = copyOfApiData.concat(this.state.apiData);
+        // console.log("api data", this.state.apiData);
+
+        console.log("updated api data", updatedApiData);
+        // return JSON.stringify(res.data);
       })
       .catch((error) => {
         // handle error
@@ -39,12 +47,19 @@ export default class Project extends React.Component {
         <button
           onClick={() => {
             this.increaseCounter();
-            this.getApi();
           }}
         >
           Button with counter {this.state.counter}
         </button>
-        <p>{this.state.apiData[0]}</p>
+        <button
+          onClick={() => {
+            this.getApi();
+          }}
+        >
+          Get API {this.state.counter}
+        </button>
+
+        <p>{this.state.apiData}</p>
       </div>
     );
   }
